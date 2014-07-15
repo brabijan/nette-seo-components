@@ -2,7 +2,9 @@
 
 namespace Brabijan\SeoComponents\Router;
 
-use Brabijan\SeoComponents\Dao\Route;
+use Brabijan\SeoComponents\CurrentTarget;
+use Brabijan\SeoComponents\Dao\Route as RouteDao;
+use Brabijan\SeoComponents\Dao\Target as TargetDao;
 use Nette\Application\IRouter;
 use Nette\Application\Request;
 use Nette\Application\Routers\RouteList;
@@ -11,17 +13,25 @@ use Nette;
 class DbRouter extends Nette\Object implements IRouter
 {
 
-	/** @var Route */
+	/** @var RouteDao */
 	private $routeDao;
+
+	/** @var TargetDao */
+	private $targetDao;
+
+	/** @var \Brabijan\SeoComponents\CurrentTarget */
+	private $currentTarget;
 
 	/** @var Target */
 	private $defaultRoute;
 
 
 
-	public function __construct(Route $routeDao)
+	public function __construct(RouteDao $routeDao, TargetDao $targetDao, CurrentTarget $currentTarget)
 	{
 		$this->routeDao = $routeDao;
+		$this->targetDao = $targetDao;
+		$this->currentTarget = $currentTarget;
 		$this->defaultRoute = new Target("Homepage", "default", NULL);
 	}
 
@@ -52,6 +62,7 @@ class DbRouter extends Nette\Object implements IRouter
 
 		if ($relativeUrl == "") {
 			$target = $this->defaultRoute;
+			$this->currentTarget->setCurrentTarget($this->targetDao->findTarget($target->presenter, $target->action, $target->id));
 		} else {
 			$route = $this->routeDao->findRouteBySlug($relativeUrl, TRUE);
 			if (!$route) {
@@ -60,6 +71,7 @@ class DbRouter extends Nette\Object implements IRouter
 					return NULL;
 				}
 			}
+			$this->currentTarget->setCurrentTarget($route->getTarget());
 			$target = new Target($route->target->targetPresenter, $route->target->targetAction, $route->target->targetId);
 		}
 

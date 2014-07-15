@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property $targetAction
  * @property $targetId
  * @property ArrayCollection|Route[] $routes
+ * @property Meta $meta
  */
 class Target extends BaseEntity
 {
@@ -36,6 +37,9 @@ class Target extends BaseEntity
 	/** @ORM\OneToMany(targetEntity="Brabijan\SeoComponents\Entity\Route", mappedBy="target") */
 	protected $routes;
 
+	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Meta", inversedBy="target") */
+	protected $meta;
+
 
 
 	public function __construct()
@@ -51,6 +55,16 @@ class Target extends BaseEntity
 	public function getRoutes()
 	{
 		return $this->routes;
+	}
+
+
+
+	/**
+	 * @return Meta
+	 */
+	public function getMeta()
+	{
+		return $this->meta;
 	}
 
 }

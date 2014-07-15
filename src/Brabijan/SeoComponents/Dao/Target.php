@@ -18,4 +18,11 @@ class Target extends Object
 		$this->targetDao = $targetDao;
 	}
 
+
+
+	public function findTarget($presenter, $action, $id)
+	{
+		return $this->targetDao->findOneBy(array("targetPresenter" => $presenter, "targetAction" => $action, "targetId" => $id));
+	}
+
 }

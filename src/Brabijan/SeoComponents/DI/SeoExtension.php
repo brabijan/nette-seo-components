@@ -22,10 +22,19 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 		$builder->addDefinition($this->prefix("routeDao"))
 				->setClass('Brabijan\SeoComponents\Dao\Route', array(new Statement('@doctrine.dao', array('Brabijan\SeoComponents\Entity\Route'))));
 
+		$builder->addDefinition($this->prefix("metaDao"))
+				->setClass('Brabijan\SeoComponents\Dao\Meta', array(new Statement('@doctrine.dao', array('Brabijan\SeoComponents\Entity\Meta'))));
+
+		$builder->addDefinition($this->prefix("currentTarget"))
+				->setClass('Brabijan\SeoComponents\CurrentTarget');
+
 		$builder->addDefinition($this->prefix('router'))
 				->setClass('Brabijan\SeoComponents\Router\DbRouter')
 				->setAutowired(FALSE)
 				->setInject(FALSE);
+
+		$builder->addDefinition($this->prefix("metaTagsControlFactory"))
+				->setImplement('Brabijan\SeoComponents\Components\MetaTagsFactory');
 
 		$builder->getDefinition('router')
 				->addSetup('Brabijan\SeoComponents\Router\DbRouter::prependTo($service, ?)', array($this->prefix('@router')));
