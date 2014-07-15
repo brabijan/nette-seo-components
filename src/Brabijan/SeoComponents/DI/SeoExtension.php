@@ -15,6 +15,11 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 	{
 		$builder = $this->getContainerBuilder();
 
+		$builder->getDefinition('nette.presenterFactory')
+				->addSetup('if (method_exists($service, ?)) { $service->setMapping(array(? => ?)); } ' .
+					'elseif (property_exists($service, ?)) { $service->mapping[?] = ?; }', array(
+						'setMapping', 'Seo', 'Brabijan\SeoComponents\Presenters\*Presenter', 'mapping', 'Seo', 'Brabijan\SeoComponents\Presenters\*Presenter'
+					));
 
 		$builder->addDefinition($this->prefix("targetDao"))
 				->setClass('Brabijan\SeoComponents\Dao\Target', array(new Statement('@doctrine.dao', array('Brabijan\SeoComponents\Entity\Target'))));
@@ -24,6 +29,9 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 
 		$builder->addDefinition($this->prefix("metaDao"))
 				->setClass('Brabijan\SeoComponents\Dao\Meta', array(new Statement('@doctrine.dao', array('Brabijan\SeoComponents\Entity\Meta'))));
+
+		$builder->addDefinition($this->prefix("settingsDao"))
+				->setClass('Brabijan\SeoComponents\Dao\Settings', array(new Statement('@doctrine.dao', array('Brabijan\SeoComponents\Entity\Settings'))));
 
 		$builder->addDefinition($this->prefix("currentTarget"))
 				->setClass('Brabijan\SeoComponents\CurrentTarget');
