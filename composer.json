@@ -1,0 +1,25 @@
+{
+	"name": "brabijan/nette-seo-components",
+	"type": "library",
+	"description": "SEO components for Nette Framework",
+	"keywords": ["nette", "seo", "router", "google analytics", "google webmaster tools", "sitemap"],
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "Jan Brabec"
+		}
+	],
+	"support": {
+		"email": "brabijan@gmail.com",
+		"issues": "https://github.com/brabijan/nette-seo-components/issues"
+	},
+	"require": {
+		"nette/nette": ">= 2.2.0"
+	},
+	"require-dev": {
+		"nette/tester": "~1.0"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	}
+}
