@@ -44,6 +44,9 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 		$builder->addDefinition($this->prefix("metaTagsControlFactory"))
 				->setImplement('Brabijan\SeoComponents\Components\MetaTagsFactory');
 
+		$builder->addDefinition($this->prefix("googleAnalyticsControlFactory"))
+				->setImplement('Brabijan\SeoComponents\Components\GoogleAnalyticsFactory');
+
 		$builder->getDefinition('router')
 				->addSetup('Brabijan\SeoComponents\Router\DbRouter::prependTo($service, ?)', array($this->prefix('@router')));
 	}
