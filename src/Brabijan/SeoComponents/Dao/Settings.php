@@ -27,7 +27,7 @@ class Settings extends Object
 	 */
 	private function setValue($key, $value)
 	{
-		if ($this->getValue($key)) {
+		if ($this->settingsDao->countBy(array("name" => $key)) != 0) {
 			$setting = $this->settingsDao->findOneBy(array("name" => $key));
 			$setting->value = $value;
 			$this->save($setting);
