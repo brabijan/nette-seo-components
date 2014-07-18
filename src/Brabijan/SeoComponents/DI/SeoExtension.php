@@ -47,6 +47,15 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 		$builder->addDefinition($this->prefix("googleAnalyticsControlFactory"))
 				->setImplement('Brabijan\SeoComponents\Components\GoogleAnalyticsFactory');
 
+		$builder->addDefinition($this->prefix("setGoogleAnalyticsForm"))
+				->setClass('Brabijan\SeoComponents\Forms\SetGoogleAnalytics');
+
+		$builder->addDefinition($this->prefix("setGoogleWebmasterToolsForm"))
+				->setClass('Brabijan\SeoComponents\Forms\SetGoogleWebmasterTools');
+
+		$builder->addDefinition($this->prefix("setRobotsFormFactory"))
+				->setClass('Brabijan\SeoComponents\Forms\SetRobots');
+
 		$builder->getDefinition('router')
 				->addSetup('Brabijan\SeoComponents\Router\DbRouter::prependTo($service, ?)', array($this->prefix('@router')));
 	}
