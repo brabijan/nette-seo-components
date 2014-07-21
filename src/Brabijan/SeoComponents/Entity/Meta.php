@@ -26,22 +26,22 @@ class Meta extends BaseEntity
 	 */
 	protected $id;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $seoTitle;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $seoKeywords;
 
-	/** @ORM\Column(type="text") */
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $seoDescription;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $seoRobots;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $sitemapChangeFreq;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $sitemapPriority;
 
 	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Target", inversedBy="meta") */
