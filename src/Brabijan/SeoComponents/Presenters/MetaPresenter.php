@@ -12,9 +12,13 @@ class MetaPresenter extends Presenter
 	public $settingsDao;
 
 
-	public function renderGoogleWebmasterTools() {
+
+
+	public function renderGoogleWebmasterTools()
+	{
 		$this->template->webmasterTools = $this->settingsDao->getWebmasterTools();
 	}
+
 
 
 	public function renderRobots()
