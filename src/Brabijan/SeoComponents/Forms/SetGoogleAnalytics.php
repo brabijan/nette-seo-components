@@ -26,7 +26,7 @@ class SetGoogleAnalytics extends Object
 		$form = new Form();
 		$form->addGroup("Set Google Analytics key");
 		$form->addText("key", "Google Analytics api key:")
-			->setRequired('Fill Google Analytics api key');
+			 ->setRequired('Fill Google Analytics api key');
 		$form->addSubmit("send", "Set Google Analytics key");
 
 		$form->onSuccess[] = $this->processForm;
