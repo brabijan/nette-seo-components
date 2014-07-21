@@ -59,6 +59,12 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 		$builder->addDefinition($this->prefix("setRobotsFormFactory"))
 				->setClass('Brabijan\SeoComponents\Forms\SetRobots');
 
+		$builder->addDefinition($this->prefix("seoContainer"))
+				->setParameters(array('Nette\Forms\ControlGroup group' => NULL, 'Brabijan\SeoComponents\Router\Target target' => NULL))
+				->setArguments(array($builder::literal('$group'), $builder::literal('$target')))
+				->setImplement('Brabijan\SeoComponents\Forms\Controls\SeoContainerFactory')
+				->addSetup("injectDependencies");
+
 		$builder->getDefinition('router')
 				->addSetup('Brabijan\SeoComponents\Router\DbRouter::prependTo($service, ?)', array($this->prefix('@router')));
 	}
