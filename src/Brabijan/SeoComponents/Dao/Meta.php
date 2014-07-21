@@ -18,4 +18,14 @@ class Meta extends Object
 		$this->metaDao = $metaDao;
 	}
 
+
+
+	/**
+	 * @param \Brabijan\SeoComponents\Entity\Meta $meta
+	 */
+	public function save(\Brabijan\SeoComponents\Entity\Meta $meta)
+	{
+		$this->metaDao->save($meta);
+	}
+
 }

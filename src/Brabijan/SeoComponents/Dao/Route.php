@@ -23,6 +23,29 @@ class Route extends Object
 
 
 	/**
+	 * @param Brabijan\SeoComponents\Entity\Target $target
+	 * @param $slug
+	 * @return Brabijan\SeoComponents\Entity\Route
+	 */
+	public function addRoute(Brabijan\SeoComponents\Entity\Target $target, $slug)
+	{
+		$qb = $this->routeDao->createQueryBuilder("r")->update();
+		$qb->set("r.oneWay", ":oneWay")->setParameter(":oneWay", TRUE);
+		$qb->where("r.target = :target")->setParameter(":target", $target);
+		$qb->getQuery()->execute();
+
+		$route = new Brabijan\SeoComponents\Entity\Route();
+		$route->target = $target;
+		$route->slug = $slug;
+		$route->oneWay = FALSE;
+		$this->routeDao->save($route);
+
+		return $route;
+	}
+
+
+
+	/**
 	 * @param Brabijan\SeoComponents\Router\Target $target
 	 * @return Brabijan\SeoComponents\Entity\Route|null
 	 */

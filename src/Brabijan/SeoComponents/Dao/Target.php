@@ -37,4 +37,14 @@ class Target extends Object
 		return $this->targetDao->findOneBy(array("targetPresenter" => $presenter, "targetAction" => $action, "targetId" => $id));
 	}
 
+
+
+	/**
+	 * @param \Brabijan\SeoComponents\Entity\Target $target
+	 */
+	public function save(\Brabijan\SeoComponents\Entity\Target $target)
+	{
+		$this->targetDao->save($target);
+	}
+
 }
