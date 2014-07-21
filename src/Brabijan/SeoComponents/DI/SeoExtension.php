@@ -33,6 +33,9 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 		$builder->addDefinition($this->prefix("settingsDao"))
 				->setClass('Brabijan\SeoComponents\Dao\Settings', array(new Statement('@doctrine.dao', array('Brabijan\SeoComponents\Entity\Settings'))));
 
+		$builder->addDefinition($this->prefix("allowedTargetList"))
+				->setClass('Brabijan\SeoComponents\AllowedTargetList');
+
 		$builder->addDefinition($this->prefix("currentTarget"))
 				->setClass('Brabijan\SeoComponents\CurrentTarget');
 
