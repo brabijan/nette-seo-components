@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @property $seoKeywords
  * @property $seoDescription
  * @property $seoRobots
+ * @property $sitemapChangeFreq
+ * @property $sitemapPriority
  */
 class Meta extends BaseEntity
 {
@@ -34,6 +36,12 @@ class Meta extends BaseEntity
 
 	/** @ORM\Column(type="string") */
 	protected $seoRobots;
+
+	/** @ORM\Column(type="string") */
+	protected $sitemapChangeFreq;
+
+	/** @ORM\Column(type="string") */
+	protected $sitemapPriority;
 
 	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Target", inversedBy="meta") */
 	protected $target;

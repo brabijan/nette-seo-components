@@ -1,0 +1,9 @@
+{contentType application/xml}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url n:foreach="$targetList as $target">
+		<loc>{$target[url]}</loc>
+		<changefreq>{$target[changefreq]}</changefreq>
+		<priority>{$target[priority]}</priority>
+	</url>
+</urlset>
