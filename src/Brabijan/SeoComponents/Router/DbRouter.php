@@ -5,6 +5,7 @@ namespace Brabijan\SeoComponents\Router;
 use Brabijan\SeoComponents\CurrentTarget;
 use Brabijan\SeoComponents\Dao\Route as RouteDao;
 use Brabijan\SeoComponents\Dao\Target as TargetDao;
+use Brabijan\SeoComponents\Dao\Settings as SettingsDao;
 use Nette\Application\IRouter;
 use Nette\Application\Request;
 use Nette\Application\Routers\RouteList;
@@ -19,6 +20,9 @@ class DbRouter extends Nette\Object implements IRouter
 	/** @var TargetDao */
 	private $targetDao;
 
+	/** @var SettingsDao */
+	private $settingsDao;
+
 	/** @var \Brabijan\SeoComponents\CurrentTarget */
 	private $currentTarget;
 
@@ -27,11 +31,12 @@ class DbRouter extends Nette\Object implements IRouter
 
 
 
-	public function __construct(RouteDao $routeDao, TargetDao $targetDao, CurrentTarget $currentTarget)
+	public function __construct(RouteDao $routeDao, TargetDao $targetDao, SettingsDao $settingsDao, CurrentTarget $currentTarget)
 	{
 		$this->routeDao = $routeDao;
 		$this->targetDao = $targetDao;
 		$this->currentTarget = $currentTarget;
+		$this->settingsDao = $settingsDao;
 		$this->defaultRoute = new Target("Homepage", "default", NULL);
 	}
 
@@ -63,6 +68,12 @@ class DbRouter extends Nette\Object implements IRouter
 		if ($relativeUrl == "") {
 			$target = $this->defaultRoute;
 			$this->currentTarget->setCurrentTarget($this->targetDao->findTarget($target->presenter, $target->action, $target->id));
+		} elseif ($relativeUrl == "sitemap.xml") {
+			$target = new Target("Seo:Meta", "sitemap");
+		} elseif ($relativeUrl == "robots.txt") {
+			$target = new Target("Seo:Meta", "robots");
+		} elseif (substr($relativeUrl, 0, 6) == "google" && $this->settingsDao->getWebmasterToolsName() == $relativeUrl) {
+			$target = new Target("Seo:Meta", "googleWebmasterTools");
 		} else {
 			$route = $this->routeDao->findRouteBySlug($relativeUrl, TRUE);
 			if (!$route) {
@@ -103,6 +114,17 @@ class DbRouter extends Nette\Object implements IRouter
 	 */
 	public function constructUrl(Request $appRequest, Nette\Http\Url $refUrl)
 	{
+		if ($appRequest->presenterName == "Seo:Meta") {
+			$action = $appRequest->parameters["action"];
+			if ($action == "sitemap") {
+				return "/sitemap.xml";
+			} elseif ($action == "robots") {
+				return "/robots.txt";
+			} elseif ($action == "googleWebmasterTools" and $webmasterToolsName = $this->settingsDao->getWebmasterToolsName()) {
+				return "/" . $webmasterToolsName;
+			}
+		}
+
 		$id = isset($appRequest->parameters["id"]) ? $appRequest->parameters["id"] : NULL;
 		$target = new Target($appRequest->presenterName, $appRequest->parameters["action"], $id);
 
