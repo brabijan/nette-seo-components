@@ -60,6 +60,16 @@ class Target extends BaseEntity
 
 
 	/**
+	 * @param Meta $meta
+	 */
+	public function setMeta(Meta $meta)
+	{
+		$this->meta = $meta;
+	}
+
+
+
+	/**
 	 * @return Meta
 	 */
 	public function getMeta()

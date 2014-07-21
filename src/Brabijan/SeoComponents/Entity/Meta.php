@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property $seoRobots
  * @property $sitemapChangeFreq
  * @property $sitemapPriority
+ * @property Target $target
  */
 class Meta extends BaseEntity
 {
@@ -45,5 +46,25 @@ class Meta extends BaseEntity
 
 	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Target", inversedBy="meta") */
 	protected $target;
+
+
+
+	/**
+	 * @param Target $target
+	 */
+	public function setTarget(Target $target)
+	{
+		$this->target = $target;
+	}
+
+
+
+	/**
+	 * @return Target
+	 */
+	public function getTarget()
+	{
+		return $this->target;
+	}
 
 }
