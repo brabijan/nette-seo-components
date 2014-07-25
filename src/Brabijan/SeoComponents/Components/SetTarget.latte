@@ -1,0 +1,83 @@
+<h1>Target list</h1>
+<div class="target-list">
+	{form $form}
+	{foreach $form->errors as $error}
+		{$error}
+	{/foreach}
+	{foreach $sections as $sectionName => $targetList}
+		<h2>{$sectionName}</h2>
+		<table class="table table-hover table-striped table-cfondensed">
+			<tr>
+				<th></th>
+				<th>Title</th>
+				<th>Keywords</th>
+				<th>Description</th>
+				<th style="width: 100px;">Robots</th>
+				<th style="width: 120px;">Sitemap change<br/> frequency</th>
+				<th style="width: 50px;">Sitemap<br/> priority</th>
+				<th style="width: 80px;"></th>
+			</tr>
+			<tr n:foreach="$targetList as $targetName => $target">
+				{var $meta = $target->meta}
+				{var $container = $form['rows'][$target->id]}
+				<td>{$targetName}</td>
+				<td>
+					{input $container[seoTitle]}
+					<span>{$meta->seoTitle}</span>
+				</td>
+				<td>
+					{input $container[seoKeywords]}
+					<span>{$meta->seoKeywords}</span>
+				</td>
+				<td>
+					{input $container[seoDescription]}
+					<span>{$meta->seoDescription}</span>
+				</td>
+				<td>
+					{input $container[seoRobots], style => "width: 100px;"}
+					<span>{$meta->seoRobots}</span>
+				</td>
+				<td>
+					{input $container[sitemapChangeFreq], style => "width: 120px;"}
+					<span>{$meta->sitemapChangeFreq}</span>
+				</td>
+				<td>
+					{input $container[sitemapPriority], style => "width: 50px;"}
+					<span>{$meta->sitemapPriority}</span>
+				</td>
+				<td style="text-align: right">
+					{input $container[save], class => "btn btn-primary save-form"}
+					<span><a href="#" class="show-form"><i class="icon-edit"></i></a></span>
+				</td>
+			</tr>
+		</table>
+		{input $form[send], class => "btn btn-success"}
+	{/foreach}
+	{/form}
+</div>
+
+<script>
+	var targetList = $(".target-list");
+	targetList.on("click", "a.show-form", function (e) {
+		$(this).closest("tr").addClass("show-form");
+		e.preventDefault();
+	});
+
+	targetList.on("click", ".save-form", function (e) {
+		var name = $(this).attr("name");
+		var value = $(this).attr("value");
+		var row = $(this).closest("tr");
+		var form = $(this).closest("form");
+
+		$.post(form.attr("action"), $(form).serialize() + "&" + name + "=" + value, function (data) {
+			$(row).find('input[name*="seoTitle"]').closest("td").find("span").html(data.values.seoTitle);
+			$(row).find('textarea[name*="seoKeywords"]').closest("td").find("span").html(data.values.seoKeywords);
+			$(row).find('textarea[name*="seoDescription"]').closest("td").find("span").html(data.values.seoDescription);
+			$(row).find('select[name*="seoRobots"]').closest("td").find("span").html(data.values.seoRobots);
+			$(row).find('select[name*="sitemapChangeFreq"]').closest("td").find("span").html(data.values.sitemapChangeFreq);
+			$(row).find('input[name*="sitemapPriority"]').closest("td").find("span").html(data.values.sitemapPriority);
+			row.removeClass("show-form");
+		});
+		e.preventDefault();
+	});
+</script>
