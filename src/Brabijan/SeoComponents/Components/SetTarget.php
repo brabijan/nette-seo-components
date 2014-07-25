@@ -3,6 +3,8 @@
 namespace Brabijan\SeoComponents\Components;
 
 use Brabijan\SeoComponents\AllowedTargetList;
+use Brabijan\SeoComponents\Entity\Meta;
+use Brabijan\SeoComponents\Entity\Target;
 use Nette\Application\UI\Control;
 use Brabijan\SeoComponents\Dao;
 
@@ -72,9 +74,20 @@ class SetTarget extends Control
 			$name = $section->getName();
 			$sections[$name] = array();
 			foreach ($section->getTargetList() as $targetName => $target) {
-				$target = $this->targetDao->findTarget($target);
-				$this->preparedTargetList[$target->id] = $target;
-				$this->preparedTargetSections[$name][$targetName] = $target;
+				$targetEntity = $this->targetDao->findTarget($target);
+				if (!$targetEntity) {
+					$targetEntity = new Target();
+					$targetEntity->targetPresenter = $target->presenter;
+					$targetEntity->targetAction = $target->action;
+					$targetEntity->targetId = $target->id;
+
+					$meta = new Meta();
+					$meta->setTarget($targetEntity);
+					$targetEntity->setMeta($meta);
+					$this->targetDao->save($targetEntity);
+				}
+				$this->preparedTargetList[$targetEntity->id] = $targetEntity;
+				$this->preparedTargetSections[$name][$targetName] = $targetEntity;
 			}
 		}
 	}

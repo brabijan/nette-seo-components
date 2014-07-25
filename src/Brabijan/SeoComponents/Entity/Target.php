@@ -37,7 +37,7 @@ class Target extends BaseEntity
 	/** @ORM\OneToMany(targetEntity="Brabijan\SeoComponents\Entity\Route", mappedBy="target") */
 	protected $routes;
 
-	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Meta", inversedBy="target") */
+	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Meta", inversedBy="target", cascade={"persist"}) */
 	protected $meta;
 
 
