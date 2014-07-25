@@ -161,7 +161,7 @@ class DbRouter extends Nette\Object implements IRouter
 	{
 		if (!$router instanceof RouteList) {
 			throw new Nette\Utils\AssertionException(
-				'If you want to use Kdyby/Console then your main router ' .
+				'If you want to use Brabijan/SeoComponents then your main router ' .
 				'must be an instance of Nette\Application\Routers\RouteList'
 			);
 		}
