@@ -36,13 +36,13 @@ class Meta extends BaseEntity
 	protected $seoDescription;
 
 	/** @ORM\Column(type="string", nullable=true) */
-	protected $seoRobots;
+	protected $seoRobots = "index";
 
 	/** @ORM\Column(type="string", nullable=true) */
-	protected $sitemapChangeFreq;
+	protected $sitemapChangeFreq = "weekly";
 
 	/** @ORM\Column(type="string", nullable=true) */
-	protected $sitemapPriority;
+	protected $sitemapPriority = "0.5";
 
 	/** @ORM\OneToOne(targetEntity="Brabijan\SeoComponents\Entity\Target", inversedBy="meta") */
 	protected $target;
