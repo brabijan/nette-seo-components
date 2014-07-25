@@ -28,7 +28,7 @@ extensions:
 ## Usage
 
 You have to insert following lines to your BasePresenter and use components in your @layout.latte 
-(typically MetaTags to <head> and GoogleAnalytics before </body> tag)
+(typically MetaTags to `<head>` and GoogleAnalytics before `</body>` tag)
 
 ```php
 /** @var \Brabijan\SeoComponents\Components\MetaTagsFactory @inject */
