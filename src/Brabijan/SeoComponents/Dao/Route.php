@@ -55,9 +55,7 @@ class Route extends Object
 		$qb->leftJoin('Brabijan\SeoComponents\Entity\Target', 't', 'WITH', 'r.target = t.id');
 		$qb->andWhere('t.targetPresenter = :presenter')->setParameter(':presenter', $target->presenter);
 		$qb->andWhere('t.targetAction = :action')->setParameter(':action', $target->action);
-		if ($target->id) {
-			$qb->andWhere('t.targetId = :id')->setParameter(':id', $target->id);
-		}
+		$qb->andWhere('t.targetId = :id')->setParameter(':id', $target->id);
 		$qb->andWhere('r.oneWay = :oneWay')->setParameter(':oneWay', FALSE);
 		$qb->setMaxResults(1);
 
