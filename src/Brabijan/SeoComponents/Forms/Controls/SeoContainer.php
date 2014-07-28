@@ -138,7 +138,7 @@ class SeoContainer extends Container
 		$this->metaDao->save($meta);
 
 		$currentRoute = $this->routeDao->findCurrentRouteByTarget($this->target);
-		if (!$currentRoute || $currentRoute->slug !== $values->route) {
+		if ($values->route && (!$currentRoute || $currentRoute->slug !== $values->route)) {
 			$this->routeDao->addRoute($target, $values->route);
 		}
 	}
