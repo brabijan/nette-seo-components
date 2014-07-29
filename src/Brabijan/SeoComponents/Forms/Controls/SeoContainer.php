@@ -58,7 +58,10 @@ class SeoContainer extends Container
 			 ->setAttribute("step", "0.1")
 			 ->addRule(Nette\Application\UI\Form::FLOAT, "Priority must be number between 0 and 1")
 			 ->addRule(Nette\Application\UI\Form::RANGE, "Priority must be number between 0 and 1", array(0, 1));
-		$this->addText("route", "Route:");
+		$this->addText("route", "Route:")
+			 ->addFilter(function ($val) {
+				 return ltrim($val, "/");
+			 });
 	}
 
 
