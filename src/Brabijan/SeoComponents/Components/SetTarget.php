@@ -76,15 +76,7 @@ class SetTarget extends Control
 			foreach ($section->getTargetList() as $targetName => $target) {
 				$targetEntity = $this->targetDao->findTarget($target);
 				if (!$targetEntity) {
-					$targetEntity = new Target();
-					$targetEntity->targetPresenter = $target->presenter;
-					$targetEntity->targetAction = $target->action;
-					$targetEntity->targetId = $target->id;
-
-					$meta = new Meta();
-					$meta->setTarget($targetEntity);
-					$targetEntity->setMeta($meta);
-					$this->targetDao->save($targetEntity);
+					$targetEntity = $this->targetDao->createBlankTarget($target);
 				}
 				$this->preparedTargetList[$targetEntity->id] = $targetEntity;
 				$this->preparedTargetSections[$name][$targetName] = $targetEntity;
