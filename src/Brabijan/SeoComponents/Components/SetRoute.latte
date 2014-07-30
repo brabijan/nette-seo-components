@@ -1,0 +1,49 @@
+<h1>Target list</h1>
+<div class="route-list">
+	{foreach $sections as $sectionName => $targetList}
+		<h2>{$sectionName}</h2>
+		<table class="table">
+			<tr class="even">
+				<th></th>
+				<th>Routes</th>
+			</tr>
+			{foreach $targetList as $targetName => $target}
+				{var $routes = isset($routeList[$target->id]) ? $routeList[$target->id] : array()}
+				{var $targetId = $target->id}
+				{var $isOdd = $iterator->isOdd()}
+				<tr n:class="$isOdd ? odd : even">
+					<td rowspan="{(count($routes) + 1)}" style="width: 50%;">{$targetName}</td>
+					<td class="add-route-form">
+						<a href="#">Add route</a>
+						{form addRouteForm-$targetId}
+						{label route/}{input route}{input send, class => "btn btn-primary"}
+						{/form}
+					</td>
+				</tr>
+				{foreach $routes as $route}
+					<tr n:class="$isOdd ? odd : even">
+						<td>
+							/{$route->slug} {if $route->oneWay == false}<i>(Aktivní)</i>{/if}
+						</td>
+					</tr>
+				{/foreach}
+			{/foreach}
+		</table>
+	{/foreach}
+</div>
+
+<style>
+	.route-list .add-route-form form {
+		display: none;
+	}
+</style>
+
+<script>
+	$(".route-list").on("click", ".add-route-form a", function(e) {
+		form = $(this).parent().find("form");
+		form.show();
+		form.find("input[type=text]").focus();
+		$(this).hide();
+		e.preventDefault();
+	});
+</script>

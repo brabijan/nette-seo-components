@@ -46,6 +46,21 @@ class Route extends Object
 
 
 	/**
+	 * @return array
+	 */
+	public function getRouteListIndexedByTarget()
+	{
+		$routes = array();
+		foreach ($this->routeDao->findBy(array(), array("oneWay" => "ASC", "id" => "DESC")) as $route) {
+			$routes[$route->target->id][$route->id] = $route;
+		}
+
+		return $routes;
+	}
+
+
+
+	/**
 	 * @param Brabijan\SeoComponents\Router\Target $target
 	 * @return Brabijan\SeoComponents\Entity\Route|null
 	 */
