@@ -110,6 +110,20 @@ class Settings extends Object
 
 
 
+	public function setBaseTitle($baseTitle)
+	{
+		$this->setValue("baseTitle", $baseTitle);
+	}
+
+
+
+	public function getBaseTitle()
+	{
+		return $this->getValue("baseTitle");
+	}
+
+
+
 	/**
 	 * @param Entity\Settings $setting
 	 */

@@ -55,7 +55,10 @@ class SeoExtension extends CompilerExtension implements IEntityProvider
 
 		$builder->addDefinition($this->prefix("setRouteFactory"))
 				->setImplement('Brabijan\SeoComponents\Components\SetRouteFactory');
-		
+
+		$builder->addDefinition($this->prefix("setBaseTitleForm"))
+				->setClass('Brabijan\SeoComponents\Forms\SetBaseTitle');
+
 		$builder->addDefinition($this->prefix("setGoogleAnalyticsForm"))
 				->setClass('Brabijan\SeoComponents\Forms\SetGoogleAnalytics');
 
