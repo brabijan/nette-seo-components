@@ -23,7 +23,13 @@
 				{foreach $routes as $route}
 					<tr n:class="$isOdd ? odd : even">
 						<td>
-							/{$route->slug} {if $route->oneWay == false}<i>(Aktivní)</i>{/if}
+							<a n:href="deleteRoute! $route->id">Delete</a>
+							/{$route->slug}
+							{if $route->oneWay == false}
+								<i>(Active)</i>
+							{else}
+								<a n:href="makeRouteActive! $route->id">Set as active</a>
+							{/if}
 						</td>
 					</tr>
 				{/foreach}

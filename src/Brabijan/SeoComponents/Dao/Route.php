@@ -100,4 +100,42 @@ class Route extends Object
 		return $this->routeDao->findOneBy($search);
 	}
 
+
+
+	/**
+	 * @param Brabijan\SeoComponents\Entity\Target $target
+	 * @param Brabijan\SeoComponents\Entity\Route $route
+	 */
+	public function setCurrentRouteForTarget(Brabijan\SeoComponents\Entity\Target $target, Brabijan\SeoComponents\Entity\Route $route)
+	{
+		$qb = $this->routeDao->createQueryBuilder("r")->update();
+		$qb->set("r.oneWay", ":oneWay")->setParameter(":oneWay", TRUE);
+		$qb->where("r.target = :target")->setParameter(":target", $target);
+		$qb->getQuery()->execute();
+
+		$route->oneWay = FALSE;
+		$this->routeDao->save($route);
+	}
+
+
+
+	/**
+	 * @param $id
+	 * @return Brabijan\SeoComponents\Entity\Route|object
+	 */
+	public function findRouteById($id)
+	{
+		return $this->routeDao->find($id);
+	}
+
+
+
+	/**
+	 * @param Brabijan\SeoComponents\Entity\Route $route
+	 */
+	public function delete(Brabijan\SeoComponents\Entity\Route $route)
+	{
+		$this->routeDao->delete($route);
+	}
+
 }

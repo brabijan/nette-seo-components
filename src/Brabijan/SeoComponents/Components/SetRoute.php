@@ -79,6 +79,26 @@ class SetRoute extends Control
 		});
 	}
 
+
+
+	public function handleDeleteRoute($routeId)
+	{
+		if ($route = $this->routeDao->findRouteById($routeId)) {
+			$this->routeDao->delete($route);
+		}
+		$this->redirect("this");
+	}
+
+
+
+	public function handleMakeRouteActive($routeId)
+	{
+		if ($route = $this->routeDao->findRouteById($routeId)) {
+			$this->routeDao->setCurrentRouteForTarget($route->target, $route);
+		}
+		$this->redirect("this");
+	}
+
 }
 
 
