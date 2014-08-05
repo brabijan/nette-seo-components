@@ -143,7 +143,16 @@ class Route extends Object
 	 */
 	public function delete(Brabijan\SeoComponents\Entity\Route $route)
 	{
+		$target = $route->target;
+		$isRouteOneWay = $route->oneWay;
 		$this->routeDao->delete($route);
+		if ($isRouteOneWay === FALSE) {
+			$currentRoute = $this->findCurrentRouteByTarget(new Brabijan\SeoComponents\Router\Target($target->targetPresenter, $target->targetAction, $target->targetId));
+			if ($currentRoute) {
+				$currentRoute->oneWay = FALSE;
+				$this->routeDao->save($currentRoute);
+			}
+		}
 	}
 
 }
