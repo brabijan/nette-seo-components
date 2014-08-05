@@ -1,5 +1,6 @@
 <h1>Target list</h1>
 <div class="route-list">
+	{snippet route-list}
 	{foreach $sections as $sectionName => $targetList}
 		<h2>{$sectionName}</h2>
 		<table class="table">
@@ -11,11 +12,12 @@
 				{var $routes = isset($routeList[$target->id]) ? $routeList[$target->id] : array()}
 				{var $targetId = $target->id}
 				{var $isOdd = $iterator->isOdd()}
+				<tbody n:snippet="route-list-$targetId">
 				<tr n:class="$isOdd ? odd : even">
 					<td rowspan="{(count($routes) + 1)}" style="width: 50%;">{$targetName}</td>
 					<td class="add-route-form">
 						<a href="#">Add route</a>
-						{form addRouteForm-$targetId}
+						{form addRouteForm-$targetId, class => "seo-ajax"}
 						{label route/}{input route}{input send, class => "btn btn-primary"}
 						{/form}
 					</td>
@@ -23,19 +25,21 @@
 				{foreach $routes as $route}
 					<tr n:class="$isOdd ? odd : even">
 						<td>
-							<a n:href="deleteRoute! $route->id">Delete</a>
+							<a n:href="deleteRoute! $route->id" class="seo-ajax">Delete</a>
 							/{$route->slug}
 							{if $route->oneWay == false}
 								<i>(Active)</i>
 							{else}
-								<a n:href="makeRouteActive! $route->id">Set as active</a>
+								<a n:href="makeRouteActive! $route->id" class="seo-ajax">Set as active</a>
 							{/if}
 						</td>
 					</tr>
 				{/foreach}
+				</tbody>
 			{/foreach}
 		</table>
 	{/foreach}
+	{/snippet}
 </div>
 
 <style>
@@ -50,6 +54,28 @@
 		form.show();
 		form.find("input[type=text]").focus();
 		$(this).hide();
+		e.preventDefault();
+	});
+
+
+	jQuery.ajaxSetup({
+		dataType: "json",
+		success: function (payload) {
+			if (payload.snippets) {
+				for (var i in payload.snippets) {
+					$("#" + i).html(payload.snippets[i]);
+				}
+			}
+		}
+	});
+
+	$(".route-list").on("click", "a.seo-ajax", function (e) {
+		$.get(this.href);
+		e.preventDefault();
+	});
+
+	$(".route-list").on("submit", "form.seo-ajax", function (e) {
+		$.post(this.href, $(this).serialize());
 		e.preventDefault();
 	});
 </script>

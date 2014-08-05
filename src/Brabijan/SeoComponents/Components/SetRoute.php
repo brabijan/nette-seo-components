@@ -71,8 +71,13 @@ class SetRoute extends Control
 		return new Multiplier(function ($targetId) {
 			$factory = new AddRouteForm($this->routeDao, $this->preparedTargetList[$targetId]);
 			$form = $factory->create();
-			$form->onSuccess[] = function () {
-				$this->redirect("this");
+			$form->onSuccess[] = function () use ($targetId) {
+				if ($this->presenter->isAjax()) {
+					$this->redrawControl("route-list");
+					$this->redrawControl("route-list-" . $targetId);
+				} else {
+					$this->redirect("this");
+				}
 			};
 
 			return $form;
@@ -86,7 +91,12 @@ class SetRoute extends Control
 		if ($route = $this->routeDao->findRouteById($routeId)) {
 			$this->routeDao->delete($route);
 		}
-		$this->redirect("this");
+		if ($this->presenter->isAjax()) {
+			$this->redrawControl("route-list");
+			$this->redrawControl("route-list-" . $route->target->id);
+		} else {
+			$this->redirect("this");
+		}
 	}
 
 
@@ -96,7 +106,12 @@ class SetRoute extends Control
 		if ($route = $this->routeDao->findRouteById($routeId)) {
 			$this->routeDao->setCurrentRouteForTarget($route->target, $route);
 		}
-		$this->redirect("this");
+		if ($this->presenter->isAjax()) {
+			$this->redrawControl("route-list");
+			$this->redrawControl("route-list-" . $route->target->id);
+		} else {
+			$this->redirect("this");
+		}
 	}
 
 }

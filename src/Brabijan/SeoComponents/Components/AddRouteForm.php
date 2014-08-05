@@ -45,6 +45,7 @@ class AddRouteForm extends Object
 	public function processForm(Form $form)
 	{
 		$this->routeDao->addRoute($this->targetEntity, $form->values->route);
+		$form["route"]->setValue("");
 	}
 
 }
