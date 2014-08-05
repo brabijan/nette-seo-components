@@ -79,8 +79,16 @@ class Route extends Object
 		$qb->setMaxResults(1);
 
 		$result = $qb->getQuery()->execute();
+		$result = !empty($result) ? $result[0] : NULL;
 
-		return !empty($result) ? $result[0] : NULL;
+		if (!$result) {
+			$qb->getParameter("oneWay")->setValue(TRUE);
+			$qb->orderBy("r.id", "DESC");
+			$resultWithOneWays = $qb->getQuery()->execute();
+			$result = !empty($resultWithOneWays) ? $resultWithOneWays[0] : NULL;
+		}
+
+		return $result;
 	}
 
 
