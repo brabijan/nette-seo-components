@@ -13,11 +13,15 @@ class Route extends Object
 	/** @var \Kdyby\Doctrine\EntityDao */
 	private $routeDao;
 
+	/** @var Nette\Caching\Cache */
+	private $cache;
 
 
-	public function __construct(EntityDao $routeDao)
+
+	public function __construct(EntityDao $routeDao, Nette\Caching\IStorage $storage)
 	{
 		$this->routeDao = $routeDao;
+		$this->cache = new Nette\Caching\Cache($storage, "brabijan.router");
 	}
 
 
@@ -39,6 +43,8 @@ class Route extends Object
 		$route->slug = $slug;
 		$route->oneWay = FALSE;
 		$this->routeDao->save($route);
+
+		$this->cleanTargetCache(new Brabijan\SeoComponents\Router\Target($target->targetPresenter, $target->targetAction, $target->targetId));
 
 		return $route;
 	}
@@ -89,6 +95,36 @@ class Route extends Object
 		}
 
 		return $result;
+	}
+
+
+
+	/**
+	 * @param Brabijan\SeoComponents\Router\Target $target
+	 * @return string|NULL
+	 */
+	public function findCurrentSlugByTarget(Brabijan\SeoComponents\Router\Target $target)
+	{
+		$serializedTarget = serialize($target);
+		$cachedSlug = $this->cache->load($serializedTarget);
+
+		if ($cachedSlug === FALSE) {
+			return NULL;
+		}
+		if ($cachedSlug !== NULL) {
+			return $cachedSlug;
+		}
+
+		if ($route = $this->findCurrentRouteByTarget($target)) {
+			$slug = $route->slug;
+			$this->cache->save($serializedTarget, $slug);
+
+			return $slug;
+		} else {
+			$this->cache->save($serializedTarget, FALSE);
+		}
+
+		return NULL;
 	}
 
 
@@ -147,12 +183,21 @@ class Route extends Object
 		$isRouteOneWay = $route->oneWay;
 		$this->routeDao->delete($route);
 		if ($isRouteOneWay === FALSE) {
-			$currentRoute = $this->findCurrentRouteByTarget(new Brabijan\SeoComponents\Router\Target($target->targetPresenter, $target->targetAction, $target->targetId));
+			$target = new Brabijan\SeoComponents\Router\Target($target->targetPresenter, $target->targetAction, $target->targetId);
+			$currentRoute = $this->findCurrentRouteByTarget($target);
 			if ($currentRoute) {
+				$this->cleanTargetCache($target);
 				$currentRoute->oneWay = FALSE;
 				$this->routeDao->save($currentRoute);
 			}
 		}
+	}
+
+
+
+	private function cleanTargetCache(Brabijan\SeoComponents\Router\Target $target)
+	{
+		$this->cache->remove(serialize($target));
 	}
 
 }

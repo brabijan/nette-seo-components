@@ -131,11 +131,11 @@ class DbRouter extends Nette\Object implements IRouter
 		if ($this->defaultRoute == $target) {
 			$slug = "/";
 		} else {
-			$route = $this->routeDao->findCurrentRouteByTarget($target);
-			if (!$route) {
+			$slug = $this->routeDao->findCurrentSlugByTarget($target);
+			if (!$slug) {
 				return NULL;
 			}
-			$slug = "/" . $route->slug;
+			$slug = "/" . $slug;
 		}
 		$parameters = $appRequest->parameters;
 		unset($parameters["action"], $parameters["id"]);
