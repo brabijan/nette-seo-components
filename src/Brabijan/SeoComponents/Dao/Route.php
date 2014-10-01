@@ -33,6 +33,8 @@ class Route extends Object
 	 */
 	public function addRoute(Brabijan\SeoComponents\Entity\Target $target, $slug)
 	{
+		$slug = Nette\Utils\Strings::webalize($slug);
+
 		$qb = $this->routeDao->createQueryBuilder("r")->update();
 		$qb->set("r.oneWay", ":oneWay")->setParameter(":oneWay", TRUE);
 		$qb->where("r.target = :target")->setParameter(":target", $target);
