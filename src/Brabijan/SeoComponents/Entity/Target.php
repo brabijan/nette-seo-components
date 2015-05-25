@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="seoTarget")
+ * @ORM\Table(name="`seoTarget`")
  * @property $id
  * @property $targetPresenter
  * @property $targetAction
