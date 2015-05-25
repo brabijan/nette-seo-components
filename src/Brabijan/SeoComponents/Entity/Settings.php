@@ -7,7 +7,7 @@ use Kdyby\Doctrine\Entities\BaseEntity;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="seoSettings")
+ * @ORM\Table(name="`seoSettings`")
  * @property $id
  * @property $name
  * @property $value

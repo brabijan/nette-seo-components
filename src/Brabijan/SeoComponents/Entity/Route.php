@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="seoRoute")
+ * @ORM\Table(name="`seoRoute`")
  * @property $id
  * @property $slug
  * @property boolean $oneWay
