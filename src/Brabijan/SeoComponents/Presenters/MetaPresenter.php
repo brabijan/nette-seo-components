@@ -21,6 +21,14 @@ class MetaPresenter extends Presenter
 
 
 
+	protected function startup()
+	{
+		parent::startup();
+		$this->autoCanonicalize = false;
+	}
+
+
+
 	public function renderGoogleWebmasterTools()
 	{
 		$this->template->webmasterTools = $this->settingsDao->getWebmasterTools();
@@ -41,7 +49,7 @@ class MetaPresenter extends Presenter
 		$targetList = array();
 		foreach ($this->allowedTargetList->getSections() as $section) {
 			foreach ($section->getTargetList() as $target) {
-				$link = $this->link('//:' . $target->presenter . ':' . $target->action, $target->id);
+				$link = $this->link('//:' . $target->presenter . ':' . $target->action, $target->id ? ["id" => $target->id] : []);
 				if ($link == "#") {
 					continue;
 				}
